@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Dalycom × AYD</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B1A18;
+    --ink-deep:#141311;
+    --gold:#C8A876;
+    --gold-deep:#B8965E;
+    --gold-light:#DAC091;
+    --cream:#FBF8F1;
+    --paper:#FFFFFF;
+    --border:#E0D5C0;
+    --text:#403a34;
+    --text-muted:#7a7168;
+    --note-bg:#FFF6E0;
+    --note-border:#E0B84A;
+    --note-text:#6b5410;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--text);
+    font-family:'Manrope',system-ui,-apple-system,sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{max-width:920px;margin:0 auto;padding:0 clamp(1.25rem,4vw,2rem);}
+
+  h1,h2,h3{font-family:'Manrope',sans-serif;font-weight:800;letter-spacing:-0.01em;line-height:1.15;text-wrap:balance;margin:0;}
+  p{margin:0;}
+
+  .eyebrow{
+    display:inline-block;font-size:0.68rem;font-weight:700;letter-spacing:0.28em;
+    text-transform:uppercase;color:var(--gold-deep);margin-bottom:0.9rem;
+  }
+  .eyebrow.on-dark{color:var(--gold-light);}
+
+  .serif-italic{font-family:'Newsreader',serif;font-style:italic;}
+
+  /* header */
+  header{
+    padding:clamp(2rem,5vw,3.25rem) 0 clamp(1.5rem,3vw,2rem);
+    border-bottom:1px solid var(--border);
+  }
+  .brand-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.6rem;}
+  .brand{display:flex;align-items:center;gap:0.55rem;font-weight:800;letter-spacing:0.1em;color:var(--ink);}
+  .brand-mark{
+    width:26px;height:26px;border-radius:7px;
+    background:linear-gradient(135deg,var(--gold-light),var(--gold-deep));
+    display:flex;align-items:center;justify-content:center;
+    color:var(--ink);font-weight:800;font-size:0.72rem;
+  }
+  .for-tag{font-size:0.78rem;color:var(--text-muted);}
+  .for-tag strong{color:var(--text);font-weight:700;}
+
+  header h1{font-size:clamp(1.9rem,4vw,2.6rem);max-width:640px;}
+  header .sub{font-size:clamp(1.02rem,1.6vw,1.2rem);color:var(--text-muted);max-width:560px;margin-top:0.75rem;}
+
+  /* tabs */
+  .tabbar{
+    position:sticky;top:0;z-index:10;background:rgba(255,255,255,0.92);backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--border);
+  }
+  .tabbar-inner{display:flex;gap:clamp(1rem,3vw,2rem);max-width:920px;margin:0 auto;padding:0 clamp(1.25rem,4vw,2rem);}
+  .tab-btn{
+    appearance:none;background:none;border:none;cursor:pointer;
+    font-family:inherit;font-size:0.86rem;font-weight:700;color:var(--text-muted);
+    padding:1rem 0.1rem;border-bottom:2.5px solid transparent;transition:color .15s ease,border-color .15s ease;
+  }
+  .tab-btn:hover{color:var(--text);}
+  .tab-btn.active{color:var(--ink);border-color:var(--gold-deep);}
+  .tab-btn:focus-visible{outline:2px solid var(--gold-deep);outline-offset:3px;border-radius:3px;}
+
+  .panel{display:none;}
+  .panel.active{display:block;}
+
+  section{padding:clamp(2.25rem,5vw,3.5rem) 0;}
+  section + section{border-top:1px solid var(--border);}
+  section.dark{background:var(--ink);border-top:none;}
+  section.dark .wrap{padding-top:clamp(0.25rem,1vw,0.5rem);}
+
+  h2{font-size:clamp(1.35rem,2.6vw,1.75rem);max-width:640px;margin-bottom:1rem;}
+  .lede{font-size:1.02rem;color:var(--text);max-width:640px;margin-bottom:1rem;}
+  .lede:last-child{margin-bottom:0;}
+
+  /* bio */
+  .bio-row{display:grid;grid-template-columns:auto 1fr;gap:1.4rem;align-items:start;}
+  .avatar{
+    width:78px;height:78px;border-radius:50%;flex-shrink:0;
+    background:linear-gradient(135deg,var(--gold-light),var(--gold-deep));
+    display:flex;align-items:center;justify-content:center;
+    color:var(--ink);font-weight:800;font-size:1.5rem;letter-spacing:0.02em;
+  }
+  .bio-name{font-weight:800;font-size:1.15rem;color:var(--ink);}
+  .bio-role{font-size:0.86rem;color:var(--text-muted);margin-top:0.15rem;}
+
+  .stat-row{display:flex;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-top:1.4rem;max-width:420px;}
+  .stat{flex:1;background:var(--cream);padding:1rem 0.6rem;text-align:center;}
+  .stat b{display:block;font-size:1.6rem;font-weight:800;color:var(--gold-deep);}
+  .stat span{display:block;font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-top:0.25rem;}
+
+  /* callouts */
+  .callout{
+    border-left:3px solid var(--gold);background:var(--cream);border-radius:0 12px 12px 0;
+    padding:1.1rem 1.35rem;margin-top:1.5rem;max-width:680px;
+  }
+  .callout .k{font-size:0.62rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:0.5rem;}
+  .callout p{font-size:0.95rem;color:var(--text);line-height:1.7;}
+
+  .note{
+    border:1.5px dashed var(--note-border);background:var(--note-bg);border-radius:10px;
+    padding:0.9rem 1.1rem;margin-top:1.5rem;max-width:680px;
+  }
+  .note .k{font-size:0.68rem;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:var(--note-text);margin-bottom:0.35rem;}
+  .note p{font-size:0.86rem;color:var(--note-text);line-height:1.6;}
+
+  /* pillars */
+  .pillars{display:flex;flex-direction:column;gap:1.4rem;margin-top:1.6rem;}
+  .pillar{
+    background:var(--paper);border:1px solid var(--border);border-radius:14px;
+    padding:clamp(1.3rem,3vw,1.8rem);
+  }
+  .pillar-head{display:flex;align-items:baseline;gap:0.7rem;margin-bottom:0.6rem;flex-wrap:wrap;}
+  .pillar-num{font-family:'Newsreader',serif;font-style:italic;font-size:1.3rem;color:var(--gold-deep);}
+  .pillar-head h3{font-size:1.08rem;font-weight:800;color:var(--ink);}
+  .pillar-def{font-size:0.94rem;color:var(--text-muted);margin-bottom:0.9rem;max-width:600px;}
+  .example{
+    border-left:2.5px solid var(--border);padding-left:0.9rem;margin-top:0.5rem;
+  }
+  .example .k{font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:0.35rem;}
+  .example p{font-size:0.9rem;line-height:1.7;color:var(--text);}
+  .example p + p{margin-top:0.55rem;}
+
+  /* work-together cards */
+  .together{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.6rem;}
+  .together-card{
+    background:var(--paper);border:1px solid var(--border);border-radius:14px;
+    padding:clamp(1.2rem,3vw,1.6rem);
+  }
+  .together-card .k{font-size:0.62rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:0.6rem;}
+  .together-card h3{font-size:1.05rem;margin-bottom:0.55rem;color:var(--ink);}
+  .together-card p{font-size:0.9rem;color:var(--text);line-height:1.65;}
+
+  /* dark section typography */
+  section.dark h2{color:var(--cream);}
+  section.dark .lede{color:rgba(251,248,241,0.72);}
+  section.dark .eyebrow{color:var(--gold-light);}
+
+  /* tab2 kpi flow */
+  .kpi-flow{
+    display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;
+    margin-top:1.6rem;padding:1.1rem 1.2rem;background:var(--cream);border:1px solid var(--border);border-radius:14px;
+  }
+  .kpi-node{
+    font-size:0.82rem;font-weight:700;color:var(--ink);background:var(--paper);
+    border:1px solid var(--border);border-radius:8px;padding:0.5rem 0.85rem;white-space:nowrap;
+  }
+  .kpi-arrow{color:var(--gold-deep);font-size:1.05rem;}
+
+  .shape-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.5rem;}
+  .shape-card{border:1px solid var(--border);border-radius:14px;padding:1.3rem;background:var(--paper);}
+  .shape-card .k{font-size:0.62rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:0.5rem;}
+  .shape-card h3{font-size:1rem;margin-bottom:0.5rem;color:var(--ink);}
+  .shape-card p{font-size:0.88rem;color:var(--text);line-height:1.6;}
+
+  .list-block{margin-top:1.4rem;}
+  .list-item{display:flex;gap:0.8rem;padding:1rem 0;border-top:1px solid var(--border);}
+  .list-item:first-child{border-top:none;}
+  .list-item h3{font-size:0.98rem;color:var(--ink);margin-bottom:0.3rem;}
+  .list-item p{font-size:0.88rem;color:var(--text);line-height:1.65;}
+
+  .cta-band{background:var(--ink-deep);padding:clamp(2rem,5vw,3rem) 0;text-align:center;border-top:none;}
+  .cta-band h2{color:var(--cream);margin:0 auto 1.4rem;text-align:center;max-width:520px;}
+  .cta-btn{
+    display:inline-flex;align-items:center;gap:0.4rem;font-size:0.92rem;font-weight:700;
+    color:var(--ink);background:linear-gradient(135deg,var(--gold-light),var(--gold-deep));
+    padding:0.75rem 1.5rem;border-radius:999px;text-decoration:none;
+  }
+
+  footer{padding:1.6rem 0 2.5rem;text-align:center;}
+  footer p{font-size:0.78rem;color:var(--text-muted);}
+
+  /* lead-gen dashboard */
+  .dash-panel{background:var(--paper);border:1px solid var(--border);border-radius:16px;padding:clamp(1.1rem,3vw,1.75rem);margin-top:1.6rem;}
+  .diagram-scroll{overflow-x:auto;}
+  .diagram-scroll svg{display:block;min-width:640px;width:100%;height:auto;}
+  figure{margin:0;}
+  figcaption{font-size:0.82rem;color:var(--text-muted);margin-top:1rem;text-align:center;line-height:1.55;}
+
+  .source-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.6rem;}
+  .source-card{border:1px solid var(--border);border-radius:12px;padding:1.1rem 1.2rem;background:var(--cream);}
+  .source-card h3{font-size:0.95rem;color:var(--ink);margin-bottom:0.5rem;}
+  .source-card .fact{font-size:0.68rem;font-weight:700;color:var(--gold-deep);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.5rem;}
+  .source-card p{font-size:0.85rem;color:var(--text);line-height:1.6;margin-bottom:0.55rem;}
+  .source-card a{font-size:0.78rem;color:var(--gold-deep);text-decoration:none;border-bottom:1px solid rgba(184,150,94,0.35);display:block;margin-top:0.3rem;word-break:break-all;}
+  .source-card a:hover{color:var(--ink);}
+
+  .table-scroll{overflow-x:auto;margin-top:1.6rem;}
+  table.score-table{width:100%;border-collapse:collapse;font-size:0.88rem;min-width:520px;}
+  table.score-table th{text-align:left;font-size:0.64rem;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;color:var(--text-muted);padding:0 0.75rem 0.65rem;border-bottom:1px solid var(--border);white-space:nowrap;}
+  table.score-table td{padding:0.75rem 0.75rem;border-bottom:1px solid var(--border);color:var(--text);}
+  table.score-table td.weight{font-weight:800;color:var(--gold-deep);font-variant-numeric:tabular-nums;white-space:nowrap;}
+  table.score-table tr:last-child td{border-bottom:none;}
+
+  .mini-dash{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:0.7rem;margin-top:1.1rem;padding:1.1rem;background:var(--cream);border:1px solid var(--border);border-radius:14px;}
+  .mini-dash-card{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:0.75rem 0.85rem;}
+  .mini-dash-card .dept{font-size:0.8rem;font-weight:700;color:var(--ink);margin-bottom:0.45rem;}
+  .status-pill{display:inline-flex;align-items:center;gap:0.35rem;font-size:0.64rem;font-weight:700;padding:0.2rem 0.55rem;border-radius:999px;letter-spacing:0.02em;}
+  .status-pill.ok{background:rgba(91,138,107,0.15);color:#3f6b4d;}
+  .status-pill.risk{background:rgba(193,87,43,0.15);color:#a1481f;}
+  .status-pill.needs{background:rgba(181,75,60,0.15);color:#93392c;}
+  .mini-dash-card .note{font-size:0.74rem;color:var(--text-muted);margin-top:0.4rem;line-height:1.4;}
+  .mini-dash-caption{font-size:0.76rem;color:var(--text-muted);font-style:italic;margin-top:0.6rem;}
+  .status-pill.watch{background:rgba(122,113,104,0.14);color:#5c554d;}
+  .status-pill.lever{background:rgba(184,150,94,0.2);color:#8a6d3f;}
+
+  .nrm-scroll{overflow-x:auto;margin-top:1.6rem;}
+  table.nrm-table{width:100%;border-collapse:collapse;font-size:0.88rem;min-width:560px;}
+  table.nrm-table th{text-align:left;font-size:0.64rem;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;color:var(--text-muted);padding:0 0.75rem 0.65rem;border-bottom:1px solid var(--border);white-space:nowrap;}
+  table.nrm-table td{padding:0.75rem 0.75rem;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle;}
+  table.nrm-table tr:last-child td{border-bottom:none;}
+  table.nrm-table td.num{font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap;}
+  table.nrm-table td.num.up{color:#3f6b4d;}
+  table.nrm-table td.num.down{color:#a1481f;}
+  .share-bar-wrap{display:flex;align-items:center;gap:0.55rem;min-width:110px;}
+  .share-bar-track{flex:1;height:7px;border-radius:99px;background:var(--border);overflow:hidden;}
+  .share-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold-light),var(--gold-deep));border-radius:99px;}
+
+  .phase-row{display:flex;gap:0.9rem;margin-top:1.6rem;flex-wrap:wrap;}
+  .phase-chip{flex:1;min-width:190px;border:1px solid var(--border);border-radius:12px;padding:1rem 1.1rem;background:var(--paper);}
+  .phase-chip .k{font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:0.4rem;}
+  .phase-chip h3{font-size:0.92rem;color:var(--ink);margin-bottom:0.35rem;}
+  .phase-chip p{font-size:0.8rem;color:var(--text-muted);line-height:1.55;}
+
+  @media (max-width:640px){
+    .together, .shape-row, .source-grid{grid-template-columns:1fr;}
+    .bio-row{grid-template-columns:1fr;}
+    .kpi-flow{flex-direction:column;align-items:flex-start;}
+    .kpi-arrow{transform:rotate(90deg);}
+  }
+</style>
+</head>
+<body>
+
+<div class="tabbar">
+  <div class="tabbar-inner">
+    <button class="tab-btn active" data-tab="tab1" onclick="showTab('tab1',this)">Who We Are</button>
+    <button class="tab-btn" data-tab="tab2" onclick="showTab('tab2',this)">The Dalycom Opportunity</button>
+    <button class="tab-btn" data-tab="tab3" onclick="showTab('tab3',this)">Lead Generation</button>
+    <button class="tab-btn" data-tab="tab4" onclick="showTab('tab4',this)">AI Opportunity</button>
+  </div>
+</div>
+
+<header>
+  <div class="wrap">
+    <div class="brand-row">
+      <div class="brand"><span class="brand-mark">AY</span> AYD SERVICES</div>
+      <div class="for-tag">Prepared for <strong>Dalycom</strong> — Alex Newman</div>
+    </div>
+  </div>
+</header>
+
+<!-- TAB 1 -->
+<div class="panel active" id="tab1">
+
+  <section>
+    <div class="wrap">
+      <p class="eyebrow">Who we are</p>
+      <div class="bio-row">
+        <div class="avatar">AY</div>
+        <div>
+          <div class="bio-name">Dr Ahmed Younes</div>
+          <div class="bio-role">Founder, AYD Services — AI, Data Science &amp; Engineering</div>
+        </div>
+      </div>
+      <p class="lede" style="margin-top:1.4rem;">Ahmed works at the intersection of AI/NLP, data science and engineering — a bachelor's in Computer Science, a master's in Data Science, and a PhD in AI. Most of his career has been spent on textual analytics, particularly social media analytics — delivered for clients including the Gates Foundation, FCDO, ISD, BBC Monitoring and Ofcom.</p>
+      <p class="lede">Alongside directing AYD, Ahmed works as a Digital Learning Consultant at QA, training senior employees inside established companies to become in-house AI specialists — hands-on, not generic e-learning. Current and past organisations include <strong>BT</strong>, <strong>NHS</strong>, <strong>Hilti</strong>, and 50+ others.</p>
+    </div>
+  </section>
+
+  <section class="dark">
+    <div class="wrap">
+      <p class="eyebrow on-dark">What we offer</p>
+      <h2>AI integration is the flagship — and the cherry on top.</h2>
+      <p class="lede">Everyone's pitching "AI integration" right now because it's the trend, and to be fair, it's most of what we do. But it's the cherry on top: roughly 80% of the work is data science and engineering — understanding what data you actually have, finding where the value in it is, and building the foundation that makes it usable. The AI layer sits on top of that foundation, for efficiency. Skip the foundation and the AI layer has nothing solid to stand on.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="eyebrow">How we build</p>
+      <h2>We don't build generic. We build bespoke.</h2>
+      <p class="lede">Off-the-shelf tools solve the problems every business shares — but to fit everyone, they have to stay generic, and it's too expensive for them to customise for every need. That gap is where we sit: those tools end up siloed, disconnected from each other, and we fill the gap by integrating them together. Three shapes that takes:</p>
+
+      <div class="pillars">
+        <div class="pillar">
+          <div class="pillar-head"><span class="pillar-num">i.</span><h3>Pulling fragmented tools into one thing</h3></div>
+          <p class="pillar-def">Day-to-day work spread across too many disconnected tools, stitched together by hand — we build the thing that ties it together.</p>
+          <div class="example">
+            <div class="k">Example — MIHE</div>
+            <p>A higher-education institute running Moodle. Building a single week of course content meant a tutor manually working across NotebookLM, ChatGPT, PowerPoint and Claude — uploading and downloading between each one — with no way to see what students were actually doing on the platform, or whether tutors' content was hitting the institute's own standard.</p>
+            <p>We built a bespoke system tailored to that exact workflow: the engagement metrics a platform like Canvas gives natively, most of the content-authoring pain points automated with AI, and visibility into both sides — tutor output and student engagement — in one place.</p>
+          </div>
+        </div>
+
+        <div class="pillar">
+          <div class="pillar-head"><span class="pillar-num">ii.</span><h3>Bespoke analytics over generic dashboards</h3></div>
+          <p class="pillar-def">A standard dashboard tells you <em>what</em> moved. It rarely tells you <em>why</em> — and why is where the decision actually lives.</p>
+          <div class="example">
+            <div class="k">Example — Hilti</div>
+            <p>A global tooling and construction-supply company. Their global team gets customer-service analytics, but the frontline team had no way to know <em>why</em> a signal moved — was it one employee, the product itself, or something else entirely on the customer's side. We built root-cause analysis that attributes the "why," not just the "what."</p>
+            <div class="k" style="margin-top:0.8rem;">Example — PING</div>
+            <p>A golf equipment company sitting on a large body of textual customer and product data, with no mainstream analytics vendor able to surface signal from it. We're helping mine that data for the signals their R&amp;D team needs to design better clubs.</p>
+            <div class="k" style="margin-top:0.8rem;">Example — Sutton Hill Farm Auctions</div>
+            <p>A family-run antiques and collectables auction house selling through the Easy Live Auction platform. The platform logs raw results — lot, estimate, hammer price — but never says <em>why</em> a lot didn't sell. We built a dashboard reading her own six years of sale history: real sell-through and category patterns, whether pricing sat outside the norm for that category, and a valuation assistant grounded in her actual comparable past lots.</p>
+            <a href="https://ayd-services.github.io/sutton-hill-farm-preview/" target="_blank" rel="noopener" style="font-size:0.82rem;color:var(--gold-deep);text-decoration:none;border-bottom:1px solid rgba(184,150,94,0.35);display:inline-block;margin-top:0.4rem;">Live preview →</a>
+          </div>
+        </div>
+
+        <div class="pillar">
+          <div class="pillar-head"><span class="pillar-num">iii.</span><h3>Bespoke point-solutions for a specific pain point</h3></div>
+          <p class="pillar-def">The narrowest kind — one very specific, very annoying manual process, solved end to end. Usually involves AI somewhere in the middle.</p>
+          <div class="example">
+            <div class="k">Example — SA Law Practice (immigration advisers)</div>
+            <p>Advisers were manually pulling case documents from SharePoint, reading through passports, certificates and bank statements by hand, then re-typing the relevant fields into the government's immigration portal one page at a time. We built a pipeline that extracts the fields automatically and pre-fills the portal form inside the adviser's own logged-in session — one page at a time, with the adviser reviewing and confirming each one before moving on, since they carry professional liability for what gets submitted under the firm's name.</p>
+            <a href="https://ayd-services.github.io/sa-law-demo/" target="_blank" rel="noopener" style="font-size:0.82rem;color:var(--gold-deep);text-decoration:none;border-bottom:1px solid rgba(184,150,94,0.35);display:inline-block;margin-top:0.4rem;">Live preview →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="eyebrow">How this could work for Dalycom</p>
+      <h2>Two ways in — not mutually exclusive.</h2>
+      <div class="together">
+        <div class="together-card">
+          <div class="k">Path one</div>
+          <h3>Improve what you already run</h3>
+          <p>A layer that sits across what's already in place — unifying the management and service experience across the tools Dalycom operates with day to day, rather than replacing any of them.</p>
+        </div>
+        <div class="together-card">
+          <div class="k">Path two</div>
+          <h3>Sell something through you</h3>
+          <p>AYD builds a layer on top of what Dalycom already resells — for instance, a bespoke reasoning layer sitting on top of Dubber's data, or an AI layer of your own — delivered under Dalycom's name, to Dalycom's clients.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- TAB 2 -->
+<div class="panel" id="tab2">
+
+  <section>
+    <div class="wrap">
+      <p class="eyebrow">For Dalycom, specifically</p>
+      <h2>An analytics layer between your operations and your profit line</h2>
+      <p class="lede">Three ideas for Dalycom specifically:</p>
+      <div class="list-block">
+        <div class="list-item">
+          <div>
+            <h3>An ERP-style integration layer</h3>
+            <p>Glues Dalycom's existing tools together into one seamless experience, instead of separate systems across account management, sales, technical delivery, support/helpdesk and back office.</p>
+            <div class="kpi-flow">
+              <span class="kpi-node">Account mgmt</span><span class="kpi-arrow">→</span>
+              <span class="kpi-node">Sales</span><span class="kpi-arrow">→</span>
+              <span class="kpi-node">Technical delivery</span><span class="kpi-arrow">→</span>
+              <span class="kpi-node">Support / helpdesk</span><span class="kpi-arrow">→</span>
+              <span class="kpi-node">Back office</span><span class="kpi-arrow">→</span>
+              <span class="kpi-node" style="background:var(--gold-light);border-color:var(--gold-deep);">Profitability</span>
+            </div>
+          </div>
+        </div>
+        <div class="list-item">
+          <div>
+            <h3>An analytics layer on top of operations</h3>
+            <p>Connects the KPIs each team already tracks to what actually drives profitability — things like customer-support ticket triage feeding into one management dashboard that ties every department back to the questions that matter: are we over-delivering, are we at risk, do we need more resources. Resource management, staffing, supply chain — for every service line above, the same layer can show its state and improve the decisions that follow from it.</p>
+            <div class="mini-dash">
+              <div class="mini-dash-card">
+                <div class="dept">Account mgmt</div>
+                <span class="status-pill ok">ON TRACK</span>
+                <p class="note">Delivering to plan</p>
+              </div>
+              <div class="mini-dash-card">
+                <div class="dept">Sales</div>
+                <span class="status-pill ok">ON TRACK</span>
+                <p class="note">Pipeline healthy</p>
+              </div>
+              <div class="mini-dash-card">
+                <div class="dept">Technical delivery</div>
+                <span class="status-pill risk">AT RISK</span>
+                <p class="note">Over-delivering — check margin</p>
+              </div>
+              <div class="mini-dash-card">
+                <div class="dept">Support / helpdesk</div>
+                <span class="status-pill needs">NEEDS RESOURCE</span>
+                <p class="note">Volume outpacing headcount</p>
+              </div>
+              <div class="mini-dash-card">
+                <div class="dept">Back office</div>
+                <span class="status-pill ok">ON TRACK</span>
+                <p class="note">Billing/suppliers current</p>
+              </div>
+            </div>
+            <p class="mini-dash-caption">Illustrative — shows the shape of the view, not live Dalycom data.</p>
+          </div>
+        </div>
+        <div class="list-item">
+          <div>
+            <h3>A bespoke layer for one customer, then an upsell</h3>
+            <p>Pick one specific pain point for one of Dalycom's own customers — say, a customer running Dubber or Akixi whose support team can see sentiment turning negative but doesn't know why. We build the bespoke analysis that answers that specific question for them. Once it's proven for one customer, it becomes a project you can upsell to the rest of your client base, on top of what you already deliver.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="shape-row">
+        <div class="shape-card">
+          <div class="k">Shape one</div>
+          <h3>One integrated system</h3>
+          <p>A single layer tying the whole chain together — every team's KPIs rolling up into one operational-and-commercial health view.</p>
+        </div>
+        <div class="shape-card">
+          <div class="k">Shape two</div>
+          <h3>One specific piece, done well</h3>
+          <p>Start narrower — for example, task triage for the support/helpdesk team: an AI layer that sits between an incoming ticket and the people who resolve it, routing and prioritising without ever touching the customer directly.</p>
+        </div>
+      </div>
+
+      <div class="callout">
+        <div class="k">Not a hypothetical</div>
+        <p>This is already the direction big telecoms are moving. Through AYD's training work with BT, Ahmed has worked directly with one of BT's Heads of Innovation on a similar initiative — the same shape of idea, applied inside a much larger telecom.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="eyebrow">Account management &amp; sales</p>
+      <h2>The same layer extends into lead management</h2>
+      <div class="list-block">
+        <div class="list-item">
+          <div>
+            <h3>Lead management</h3>
+            <p>Once account and sales KPIs are visible in one place, the natural extension is managing the pipeline itself through that same layer — not a separate tool bolted on afterwards.</p>
+          </div>
+        </div>
+        <div class="list-item">
+          <div>
+            <h3>Lead generation</h3>
+            <p>A dedicated service on top: surfacing new prospects for Dalycom's own sales team from the same operational data, rather than treating lead-gen as a separate workstream.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="eyebrow">Supply chain &amp; net revenue management</p>
+      <h2>Know your portfolio well enough to negotiate from it</h2>
+      <p class="lede">Net revenue management runs on three levers — Pricing, Portfolio, Promotion. Same three, applied to what Dalycom actually sells:</p>
+
+      <div class="list-block">
+        <div class="list-item">
+          <div>
+            <h3>Portfolio</h3>
+            <p>Which service lines are actually growing, and by how much — the view below. A category with demonstrable, measured growth is the one you take back to a supplier and negotiate a better deal on, the same way a portfolio-mix pitch to a retailer leads with growth numbers, not a general ask.</p>
+          </div>
+        </div>
+        <div class="list-item">
+          <div>
+            <h3>Pricing</h3>
+            <p>Where each service line's real price sits against list price and against comparable competitor contracts — so pricing decisions rest on what the market's actually paying, not what the price list says it should be.</p>
+          </div>
+        </div>
+        <div class="list-item">
+          <div>
+            <h3>Promotion</h3>
+            <p>Which discounts and install offers are actually earning their keep — winning genuinely new business — versus being given away to customers who'd have signed at full price anyway.</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="lede" style="margin-top:1.8rem;font-size:0.95rem;">Portfolio, in view:</p>
+      <div class="nrm-scroll">
+        <table class="nrm-table">
+          <thead>
+            <tr><th>Category</th><th>Share of revenue</th><th>YoY growth</th><th>Signal</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>CCTV Systems</td>
+              <td><div class="share-bar-wrap"><div class="share-bar-track"><div class="share-bar-fill" style="width:18%;"></div></div><span>18%</span></div></td>
+              <td class="num up">+34%</td>
+              <td><span class="status-pill lever">NEGOTIATE</span></td>
+            </tr>
+            <tr>
+              <td>Cloud Based Services</td>
+              <td><div class="share-bar-wrap"><div class="share-bar-track"><div class="share-bar-fill" style="width:22%;"></div></div><span>22%</span></div></td>
+              <td class="num up">+21%</td>
+              <td><span class="status-pill lever">NEGOTIATE</span></td>
+            </tr>
+            <tr>
+              <td>Cabling &amp; Wifi</td>
+              <td><div class="share-bar-wrap"><div class="share-bar-track"><div class="share-bar-fill" style="width:15%;"></div></div><span>15%</span></div></td>
+              <td class="num up">+12%</td>
+              <td><span class="status-pill watch">WATCH</span></td>
+            </tr>
+            <tr>
+              <td>Telephone Systems</td>
+              <td><div class="share-bar-wrap"><div class="share-bar-track"><div class="share-bar-fill" style="width:20%;"></div></div><span>20%</span></div></td>
+              <td class="num up">+4%</td>
+              <td><span class="status-pill ok">STEADY</span></td>
+            </tr>
+            <tr>
+              <td>Broadband &amp; Mobile</td>
+              <td><div class="share-bar-wrap"><div class="share-bar-track"><div class="share-bar-fill" style="width:17%;"></div></div><span>17%</span></div></td>
+              <td class="num down">−3%</td>
+              <td><span class="status-pill needs">DECLINING</span></td>
+            </tr>
+            <tr>
+              <td>IT Support</td>
+              <td><div class="share-bar-wrap"><div class="share-bar-track"><div class="share-bar-fill" style="width:8%;"></div></div><span>8%</span></div></td>
+              <td class="num up">+9%</td>
+              <td><span class="status-pill watch">WATCH</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="mini-dash-caption">Illustrative — shape of the view, not real Dalycom figures. Categories follow the service lines from the opportunity map.</p>
+
+      <div class="note" style="max-width:none;">
+        <div class="k">What this view is actually for</div>
+        <p>CCTV and Cloud Based Services are the two growing fastest here — over 20% year-on-year — which is exactly the evidence you'd take back to a supplier to push for better terms on those lines specifically. Broadband &amp; Mobile is shrinking, which is a different conversation: renegotiate down, bundle it differently, or stop over-investing account-management time there. That's the whole point of measuring category growth in the first place — it turns "we'd like a better deal" into "here's the number that justifies one."</p>
+      </div>
+
+      <div class="callout">
+        <div class="k">Important</div>
+        <p>Dalycom already has a CRM. This isn't a pitch to replace it — it's a layer that sits on top of the CRM you already run, reading from it rather than competing with it.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="wrap">
+      <h2>Let's work out which of these is worth building first.</h2>
+      <a href="#" class="cta-btn">Talk it through with Ahmed →</a>
+    </div>
+  </section>
+
+</div>
+
+<!-- TAB 3 -->
+<div class="panel" id="tab3">
+
+  <section>
+    <div class="wrap">
+      <p class="eyebrow">Lead generation</p>
+      <h2>A pipeline that turns public data into a ranked call list</h2>
+      <p class="lede">Three free-or-low-cost public data sources, matched into one record per company, scored on likely buying intent, and pushed out as a weekly priority list for Dalycom's sales team.</p>
+
+      <div class="dash-panel">
+        <figure>
+          <div class="diagram-scroll">
+            <svg viewBox="0 0 1100 460" role="img" aria-label="Pipeline: three public data sources feed an ingestion step, which matches and normalises records, scores them 0 to 100, stores one record per company, and outputs a weekly priority list and digest email; stored records are re-scored automatically as new signals arrive.">
+              <defs>
+                <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+                  <path d="M0,0 L10,5 L0,10 z" fill="#9c9186"></path>
+                </marker>
+                <marker id="arrowGold" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+                  <path d="M0,0 L10,5 L0,10 z" fill="#B8965E"></path>
+                </marker>
+              </defs>
+
+              <!-- column headers -->
+              <text x="105" y="22" text-anchor="middle" font-size="10.5" font-weight="800" letter-spacing="1.2" fill="#B8965E">SOURCES</text>
+              <text x="285" y="22" text-anchor="middle" font-size="10.5" font-weight="800" letter-spacing="1.2" fill="#B8965E">INGEST</text>
+              <text x="460" y="22" text-anchor="middle" font-size="10.5" font-weight="800" letter-spacing="1.2" fill="#B8965E">STRUCTURE</text>
+              <text x="635" y="22" text-anchor="middle" font-size="10.5" font-weight="800" letter-spacing="1.2" fill="#B8965E">SCORE</text>
+              <text x="810" y="22" text-anchor="middle" font-size="10.5" font-weight="800" letter-spacing="1.2" fill="#B8965E">STORE</text>
+              <text x="985" y="22" text-anchor="middle" font-size="10.5" font-weight="800" letter-spacing="1.2" fill="#B8965E">ACT</text>
+
+              <!-- arrows: sources -> ingest -->
+              <line x1="190" y1="100" x2="210" y2="205" stroke="#9c9186" stroke-width="1.5" marker-end="url(#arrow)"></line>
+              <line x1="190" y1="210" x2="210" y2="210" stroke="#9c9186" stroke-width="1.5" marker-end="url(#arrow)"></line>
+              <line x1="190" y1="320" x2="210" y2="215" stroke="#9c9186" stroke-width="1.5" marker-end="url(#arrow)"></line>
+
+              <!-- ingest -> match -->
+              <line x1="360" y1="210" x2="378" y2="210" stroke="#9c9186" stroke-width="1.5" marker-end="url(#arrow)"></line>
+              <!-- match -> score -->
+              <line x1="540" y1="210" x2="558" y2="210" stroke="#9c9186" stroke-width="1.5" marker-end="url(#arrow)"></line>
+              <!-- score -> store -->
+              <line x1="710" y1="210" x2="728" y2="210" stroke="#9c9186" stroke-width="1.5" marker-end="url(#arrow)"></line>
+              <!-- store -> priority list -->
+              <line x1="890" y1="195" x2="908" y2="172" stroke="#B8965E" stroke-width="1.7" marker-end="url(#arrowGold)"></line>
+              <text x="899" y="180" text-anchor="middle" font-size="9" fill="#B8965E" font-weight="700">50+</text>
+              <!-- store -> weekly digest -->
+              <line x1="890" y1="230" x2="908" y2="288" stroke="#9c9186" stroke-width="1.5" marker-end="url(#arrow)"></line>
+
+              <!-- feedback loop: store -> score, re-score -->
+              <path d="M810,160 L810,85 L635,85 L635,153" fill="none" stroke="#9c9186" stroke-width="1.3" stroke-dasharray="5,4" marker-end="url(#arrow)"></path>
+              <text x="722" y="75" text-anchor="middle" font-size="9" fill="#7a7168" font-style="italic">re-scored as new signals arrive</text>
+
+              <!-- source boxes -->
+              <rect x="20" y="60" width="170" height="80" rx="10" fill="#FBF8F1" stroke="#E0D5C0"></rect>
+              <text x="105" y="92" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1B1A18">Companies House</text>
+              <text x="105" y="110" text-anchor="middle" font-size="9.5" fill="#7a7168">new co's, SIC codes</text>
+              <text x="105" y="124" text-anchor="middle" font-size="9.5" fill="#7a7168">directors, filings</text>
+
+              <rect x="20" y="170" width="170" height="80" rx="10" fill="#FBF8F1" stroke="#E0D5C0"></rect>
+              <text x="105" y="202" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1B1A18">Adzuna / Reed</text>
+              <text x="105" y="220" text-anchor="middle" font-size="9.5" fill="#7a7168">hiring signals</text>
+              <text x="105" y="234" text-anchor="middle" font-size="9.5" fill="#7a7168">IT / Facilities roles</text>
+
+              <rect x="20" y="280" width="170" height="80" rx="10" fill="#FBF8F1" stroke="#E0D5C0"></rect>
+              <text x="105" y="312" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1B1A18">Planning Data</text>
+              <text x="105" y="330" text-anchor="middle" font-size="9.5" fill="#7a7168">new premises, refits</text>
+              <text x="105" y="344" text-anchor="middle" font-size="9.5" fill="#7a7168">extensions</text>
+
+              <!-- ingest box -->
+              <rect x="210" y="155" width="150" height="110" rx="10" fill="#1B1A18"></rect>
+              <text x="285" y="196" text-anchor="middle" font-size="13" font-weight="800" fill="#FBF8F1">Ingest</text>
+              <text x="285" y="216" text-anchor="middle" font-size="9.5" fill="#DAC091">n8n / cron</text>
+              <text x="285" y="231" text-anchor="middle" font-size="9.5" fill="#DAC091">daily or weekly</text>
+
+              <!-- match & normalise -->
+              <rect x="380" y="160" width="160" height="100" rx="10" fill="#FFFFFF" stroke="#B8965E" stroke-width="1.6"></rect>
+              <text x="460" y="192" text-anchor="middle" font-size="11.5" font-weight="700" fill="#1B1A18">Match &amp; Normalise</text>
+              <text x="460" y="211" text-anchor="middle" font-size="9.5" fill="#7a7168">dedupe: name + address</text>
+              <text x="460" y="225" text-anchor="middle" font-size="9.5" fill="#7a7168">(rapidfuzz)</text>
+
+              <!-- score -->
+              <rect x="560" y="155" width="150" height="110" rx="10" fill="#1B1A18"></rect>
+              <text x="635" y="196" text-anchor="middle" font-size="13" font-weight="800" fill="#FBF8F1">Score</text>
+              <text x="635" y="216" text-anchor="middle" font-size="9.5" fill="#DAC091">weighted rules</text>
+              <text x="635" y="231" text-anchor="middle" font-size="9.5" fill="#DAC091">0–100 per company</text>
+
+              <!-- store / lead database -->
+              <rect x="730" y="160" width="160" height="100" rx="10" fill="#FBF8F1" stroke="#E0D5C0"></rect>
+              <text x="810" y="192" text-anchor="middle" font-size="12" font-weight="700" fill="#1B1A18">Lead Database</text>
+              <text x="810" y="211" text-anchor="middle" font-size="9.5" fill="#7a7168">1 record / company</text>
+              <text x="810" y="225" text-anchor="middle" font-size="9.5" fill="#7a7168">+ signal history</text>
+
+              <!-- outputs -->
+              <rect x="910" y="130" width="150" height="90" rx="10" fill="#FBF8F1" stroke="#B8965E" stroke-width="1.6"></rect>
+              <text x="985" y="160" text-anchor="middle" font-size="12" font-weight="700" fill="#1B1A18">Priority List</text>
+              <text x="985" y="178" text-anchor="middle" font-size="9.5" fill="#7a7168">score 50+</text>
+              <text x="985" y="192" text-anchor="middle" font-size="9.5" fill="#7a7168">CSV / Sheet / CRM</text>
+
+              <rect x="910" y="250" width="150" height="90" rx="10" fill="#FBF8F1" stroke="#E0D5C0"></rect>
+              <text x="985" y="280" text-anchor="middle" font-size="12" font-weight="700" fill="#1B1A18">Weekly Digest</text>
+              <text x="985" y="298" text-anchor="middle" font-size="9.5" fill="#7a7168">email → sales team</text>
+            </svg>
+          </div>
+          <figcaption>Every ingestion run scores companies fresh; anything already sitting in the Lead Database gets re-scored automatically the moment a new signal lands against it — a company that was just "newly incorporated" can jump the priority list weeks later when it posts a relevant job ad.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="eyebrow">Data sources</p>
+      <h2>Three feeds, none strong alone</h2>
+      <div class="source-grid">
+        <div class="source-card">
+          <h3>Companies House API</h3>
+          <p class="fact">Free · 600 requests / 5 min</p>
+          <p>New incorporations, SIC codes, registered address, directors, filing history.</p>
+          <a href="https://developer.company-information.service.gov.uk" target="_blank" rel="noopener">API docs →</a>
+          <a href="https://dataledger.uk/companies-house-updates" target="_blank" rel="noopener">Free bulk monthly CSV →</a>
+        </div>
+        <div class="source-card">
+          <h3>Adzuna / Reed Jobs</h3>
+          <p class="fact">Free registration</p>
+          <p>UK job listings searchable by keyword and location — catches businesses hiring Office Manager, IT Manager or Facilities Coordinator roles: a comms/IT refresh signal.</p>
+          <a href="https://developer.adzuna.com" target="_blank" rel="noopener">Adzuna developer portal →</a>
+          <a href="https://www.reed.co.uk/developers" target="_blank" rel="noopener">Reed.co.uk API →</a>
+        </div>
+        <div class="source-card">
+          <h3>Planning Application Data</h3>
+          <p class="fact">Free (England-wide) + paid aggregators</p>
+          <p>New premises, refits, extensions — a strong timing signal for CCTV, cabling/wifi and telephony install work.</p>
+          <a href="https://www.planning.data.gov.uk" target="_blank" rel="noopener">Planning Data API →</a>
+          <a href="https://searchland.co.uk/our-apis/planning-applications" target="_blank" rel="noopener">Searchland (425+ councils, paid) →</a>
+        </div>
+      </div>
+      <div class="note" style="max-width:none;">
+        <div class="k">Worth knowing going in</div>
+        <p>Individual council planning portals are free, but checking each one by one doesn't scale by hand. Rather than paying an ongoing subscription to an aggregator like Searchland or LandHawk, we can build and run that ingestion directly — same coverage, no third-party licence fee.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="eyebrow">Scoring model</p>
+      <h2>Weighted rules to start</h2>
+      <p class="lede">A simple weighted rule-based score — not full ML — is the right starting point: transparent, easy for Dalycom's team to sanity-check and adjust, and it doesn't need training data to get going. It can get more sophisticated from here — once there's enough real outcome data to learn from, the same pipeline can move to a more intelligent, more automated scoring model.</p>
+      <div class="table-scroll">
+        <table class="score-table">
+          <thead>
+            <tr><th>Signal</th><th>Weight</th><th>Source</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Right sector (SIC match: retail, hospitality, education, warehousing…)</td><td class="weight">+20</td><td>Companies House</td></tr>
+            <tr><td>Newly incorporated (&lt; 6 months)</td><td class="weight">+25</td><td>Companies House</td></tr>
+            <tr><td>Hiring for Office Manager / IT Manager / Facilities</td><td class="weight">+20</td><td>Adzuna / Reed</td></tr>
+            <tr><td>Active planning application (new premises, refit, extension)</td><td class="weight">+25</td><td>Planning Data</td></tr>
+            <tr><td>Company size growth (employee count trend)</td><td class="weight">+10</td><td>Companies House filings</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="lede" style="margin-top:1.4rem;font-size:0.92rem;color:var(--text-muted);">Leads scoring <strong style="color:var(--gold-deep);">50+</strong> go into the weekly priority list. Everything else stays in the database and gets re-scored as new signals arrive.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="eyebrow">Suggested rollout</p>
+      <h2>Prove it cheap, then scale the spend</h2>
+      <div class="phase-row">
+        <div class="phase-chip">
+          <div class="k">Phase 1 — Pilot</div>
+          <h3>Companies House + Adzuna only</h3>
+          <p>Both free. Planning-portal checks done manually for one or two target councils to start.</p>
+        </div>
+        <div class="phase-chip">
+          <div class="k">Phase 2 — Validate</div>
+          <h3>Test the weights against reality</h3>
+          <p>Score the weighting model against real conversion data from the first batch of outreach; adjust.</p>
+        </div>
+        <div class="phase-chip">
+          <div class="k">Phase 3 — Scale</div>
+          <h3>Bring council coverage in-house</h3>
+          <p>Once volume justifies it, we build direct ingestion across the councils that matter — instead of an ongoing aggregator subscription — and automate output straight into Dalycom's CRM.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="eyebrow">Beyond the pipeline</p>
+      <h2>Bespoke lead management, not what a generic tool gives you</h2>
+      <p class="lede">Scoring and ranking leads is only the first half. Off-the-shelf CRMs manage a lead the same generic way regardless of what kind of business is selling — a stage pipeline and a follow-up reminder. A bespoke layer can manage the lead the way Dalycom's team actually sells: routing a CCTV-signal lead to whoever handles CCTV, a cloud-migration signal to whoever handles Cloud, with follow-up timing and messaging built around each service line rather than one generic sequence applied to everything.</p>
+    </div>
+  </section>
+
+</div>
+
+<!-- TAB 4 -->
+<div class="panel" id="tab4">
+
+  <section>
+    <div class="wrap">
+      <p class="eyebrow">AI opportunity</p>
+      <h2>Three places the market's already heading</h2>
+      <p class="lede">Not theory — we can see big businesses already moving this way, and each one maps onto something Dalycom already runs.</p>
+
+      <div class="pillars">
+        <div class="pillar">
+          <div class="pillar-head"><span class="pillar-num">i.</span><h3>Agents that resolve things, not just route them</h3></div>
+          <p class="pillar-def">This goes a step further than the ticket-triage idea already on the table. Instead of just routing a ticket to a person, the agent works out what actually needs doing and does it.</p>
+          <div class="example">
+            <div class="k">Live precedent — BT</div>
+            <p>A separate BT team already runs this: a customer query comes in, an agent works out what tasks it actually maps to, then launches agents directly against the network and underlying infrastructure to resolve it — collapsing a multi-step manual process into one automated pass.</p>
+          </div>
+        </div>
+
+        <div class="pillar">
+          <div class="pillar-head"><span class="pillar-num">ii.</span><h3>Chatbot cost &amp; performance layer</h3></div>
+          <p class="pillar-def">Running a chatbot isn't free, and "is it actually working" is a different question from "is it switched on." Both need measuring, not assuming.</p>
+          <div class="example">
+            <div class="k">Live precedent — BT</div>
+            <p>Another BT team is focused on exactly this: understanding what their chatbot actually costs to run, where that cost can be trimmed, and separately, how well it's actually performing.</p>
+            <p><strong>Relevant to Dalycom specifically:</strong> Omnichat already ships chatbot automation for your clients' WhatsApp. This is the layer that tells you whether it's earning its keep — not something Omnichat itself reports on.</p>
+          </div>
+        </div>
+
+        <div class="pillar">
+          <div class="pillar-head"><span class="pillar-num">iii.</span><h3>Cloud usage, cost &amp; prediction layer</h3></div>
+          <p class="pillar-def">The same shape of idea already sitting on the Cloud Based Services line of the opportunity map — usage/cost anomaly detection, flagging accounts that are over- or under-provisioned, predicting cost before it lands.</p>
+          <div class="example">
+            <div class="k">Live precedent — Cloud Bridge &amp; BT</div>
+            <p>Comparable work already built for Cloud Bridge and BT: an agentic/analytics layer that manages cloud accounts, flags provisioning anomalies, and predicts cost trends — not a new idea for AYD, existing precedent behind it.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dark">
+    <div class="wrap">
+      <p class="eyebrow on-dark">Where this sits</p>
+      <h2>A layer on top of what's already there — Dubber and Akixi included</h2>
+      <p class="lede">Same posture as everything else in this document: not replacing Dubber or Akixi, sitting on top of them — bespoke questions and bespoke solutions built for what Dalycom's customers actually need, reading off data those tools already produce.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="eyebrow">How we'd start</p>
+      <h2>One real starting point, then a product</h2>
+      <div class="together">
+        <div class="together-card">
+          <div class="k">Start narrow</div>
+          <h3>Pick one bespoke problem</h3>
+          <p>Either something inside Dalycom itself, or a specific need belonging to one of Dalycom's own customers — small enough to actually build and prove quickly.</p>
+        </div>
+        <div class="together-card">
+          <div class="k">Then productise</div>
+          <h3>Turn it into an upsell</h3>
+          <p>Once it's working for that one case, package it as a repeatable product Dalycom can offer across the rest of its client base — under Dalycom's name.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>AYD Services — prepared for Dalycom, August 2026. Working draft for discussion, not a final proposal.</p>
+  </div>
+</footer>
+
+<script>
+  function showTab(id, btn){
+    document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+    document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+</script>
+</body>
+</html>
